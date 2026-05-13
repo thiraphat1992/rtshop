@@ -44,6 +44,9 @@ yarn-error.log*
 # netlify
 .netlify
 
+# Claude Code local settings (contains local URLs — not for repo)
+.claude/
+
 # local uploads (use Cloudinary in production)
 /public/uploads/
 

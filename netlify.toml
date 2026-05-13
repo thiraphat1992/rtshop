@@ -4,7 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_APP_URL,NEXT_PUBLIC_APP_NAME"
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_APP_URL,NEXT_PUBLIC_APP_NAME,NEXTAUTH_URL"
+  SECRETS_SCAN_OMIT_PATHS = ".claude/"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
