@@ -23,7 +23,7 @@ export default async function ProductSection({
     price: number; comparePrice?: number;
     rating: number; sold: number; stock: number;
     images: { url: string; altText?: string }[];
-    shop: { name: string };
+    shop: { id: string; name: string };
     category?: { name: string };
   }[] = [];
 
@@ -32,7 +32,7 @@ export default async function ProductSection({
       where: { isActive: true, shop: { status: { not: "SUSPENDED" } } },
       include: {
         images:   { take: 1, orderBy: { sortOrder: "asc" } },
-        shop:     { select: { name: true } },
+        shop:     { select: { id: true, name: true } },
         category: { select: { name: true } },
       },
       orderBy: sortBy === "best_selling" ? { sold: "desc" } : { createdAt: "desc" },
@@ -49,7 +49,7 @@ export default async function ProductSection({
       sold:         p.sold,
       stock:        p.stock,
       images:       p.images.map((img) => ({ url: img.url, altText: img.altText ?? undefined })),
-      shop:         { name: p.shop.name },
+      shop:         { id: p.shop.id, name: p.shop.name },
       category:     p.category ? { name: p.category.name } : undefined,
     }));
   } catch {

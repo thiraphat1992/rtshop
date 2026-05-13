@@ -57,7 +57,7 @@ export default function SellerDashboardPage() {
   if (fetching || authLoading) {
     return (
       <div className="flex flex-col min-h-screen">
-        <SellerTopbar title="แดชบอร์ด" sellerName="..." />
+        <SellerTopbar title="แดชบอร์ด" />
         <div className="flex-1 flex items-center justify-center">
           <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
         </div>
@@ -67,7 +67,7 @@ export default function SellerDashboardPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <SellerTopbar title="แดชบอร์ด" sellerName={user?.name ?? ""} />
+      <SellerTopbar title="แดชบอร์ด" />
 
       <div className="flex-1 p-6 space-y-6">
         {/* Pending orders alert */}

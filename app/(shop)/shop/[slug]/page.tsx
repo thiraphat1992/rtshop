@@ -26,14 +26,14 @@ interface Product {
   name: string;
   slug: string;
   price: number;
-  comparePrice: number | null;
+  comparePrice: number | null | undefined;
   rating: number;
   reviewCount: number;
   sold: number;
   stock: number;
   images: { url: string }[];
   category: { name: string };
-  shop: { name: string; slug: string };
+  shop: { id: string; name: string; slug: string };
 }
 
 export default function ShopPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -138,7 +138,7 @@ export default function ShopPage({ params }: { params: Promise<{ slug: string }>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={{ ...product, comparePrice: product.comparePrice ?? undefined }} />
             ))}
           </div>
         )}

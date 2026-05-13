@@ -35,7 +35,7 @@ export async function GET(
       include: {
         images: { orderBy: { sortOrder: "asc" }, take: 1 },
         category: { select: { name: true } },
-        shop: { select: { name: true, slug: true } },
+        shop: { select: { id: true, name: true, slug: true } },
       },
       orderBy: { sold: "desc" },
       skip,
