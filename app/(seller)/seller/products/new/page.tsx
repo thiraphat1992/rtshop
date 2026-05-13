@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Upload, X, Plus, Image as ImageIcon, Package,
@@ -19,7 +19,6 @@ interface Variant {
 
 export default function NewProductPage() {
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [categories,   setCategories]   = useState<Category[]>([]);
   const [images,       setImages]       = useState<string[]>([]);
@@ -60,6 +59,7 @@ export default function NewProductPage() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
+    const input = e.target;
     setUploading(true);
     setError("");
     try {
@@ -73,7 +73,7 @@ export default function NewProductPage() {
       }
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      input.value = "";
     }
   };
 
@@ -203,18 +203,25 @@ export default function NewProductPage() {
               </h3>
               <div className="grid grid-cols-4 gap-3">
                 {images.length < 8 && (
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploading}
-                    className="aspect-square border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-orange-400 hover:bg-orange-50 transition-colors text-gray-400 hover:text-orange-500 disabled:opacity-50"
+                  <label
+                    className={`aspect-square border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 transition-colors cursor-pointer
+                      ${uploading ? "border-orange-300 bg-orange-50 opacity-60 pointer-events-none" : "border-gray-200 hover:border-orange-400 hover:bg-orange-50 text-gray-400 hover:text-orange-500"}`}
                   >
-                    {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Upload className="h-6 w-6" />}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      multiple
+                      className="hidden"
+                      disabled={uploading}
+                      onChange={handleFileChange}
+                    />
+                    {uploading ? <Loader2 className="h-6 w-6 animate-spin text-orange-500" /> : <Upload className="h-6 w-6" />}
                     <span className="text-xs font-medium">{uploading ? "กำลังอัพโหลด..." : "อัพโหลด"}</span>
-                  </button>
+                  </label>
                 )}
                 {images.map((img, idx) => (
                   <div key={idx} className="relative aspect-square rounded-xl overflow-hidden group border border-gray-100">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={img} alt="" className="w-full h-full object-cover" />
                     {idx === 0 && (
                       <span className="absolute bottom-1 left-1 text-[10px] bg-orange-500 text-white px-1.5 py-0.5 rounded font-medium">หลัก</span>
@@ -229,14 +236,6 @@ export default function NewProductPage() {
                   </div>
                 ))}
               </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
-                multiple
-                className="hidden"
-                onChange={handleFileChange}
-              />
               <p className="text-xs text-gray-400">รูปแรกจะเป็นรูปหลักของสินค้า แนะนำขนาด 800×800px (สูงสุด 8 รูป, ไม่เกิน 5MB ต่อรูป)</p>
             </div>
 
